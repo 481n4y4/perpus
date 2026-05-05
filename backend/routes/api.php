@@ -11,7 +11,17 @@ Route::get('/book/{id}', [BookController::class, 'show']);
 Route::put('/book/{id}', [BookController::class, 'update']);
 Route::delete('/book/{id}', [BookController::class, 'destroy']);
 
-Route::prefix('/auth')->controller(AuthController::class)->group(function(){
+Route::prefix('/book')->controller(BookController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'show');
+    Route::middleware(['auth:sanctum', 'role: admin'])->group(function () {
+        Route::post('/book',  'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+});
+
+Route::prefix('/auth')->controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::middleware('auth:sanctum')->group(function () {
