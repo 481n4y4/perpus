@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('publish-date');
             $table->integer('price');
             $table->integer('stock');
-            $table->string('book_cover')->nullable(false);
+            $table->string('book_cover')->nullable(true);
             $table->timestamps();
         });
     }
