@@ -97,7 +97,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $book->delete();
 
-        return reponse()->json([
+        return response()->json([
             'message' => 'berhasil menghapus data buku',
             'data' => $book
         ]);
