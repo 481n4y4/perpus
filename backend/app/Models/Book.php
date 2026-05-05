@@ -16,6 +16,6 @@ class Book extends Model
         'publish-date',
         'price',
         'stock',
-        'cover_book'
+        'book_cover'
     ];
 }

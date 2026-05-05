@@ -14,8 +14,8 @@ Route::delete('/book/{id}', [BookController::class, 'destroy']);
 Route::prefix('/book')->controller(BookController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}', 'show');
-    Route::middleware(['auth:sanctum', 'role: admin'])->group(function () {
-        Route::post('/book',  'store');
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        Route::post('/',  'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });

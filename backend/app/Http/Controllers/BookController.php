@@ -32,11 +32,11 @@ class BookController extends Controller
             'publish-date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
-            'cover_book' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        if ($request->hasFile('cover_book')) {
-            $validated['cover_book'] = $request->file('cover_book')->store('books', 'public');
+        if ($request->hasFile('book_cover')) {
+            $validated['book_cover'] = $request->file('book_cover')->store('books', 'public');
         };
 
         $book = Book::create($validated);
@@ -74,11 +74,11 @@ class BookController extends Controller
             'publish-date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
-            'cover_book' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        if ($request->hasFile('cover_book')) {
-            $validated['cover_book'] = $request->file('cover_book')->store('books', 'public');
+        if ($request->hasFile('book_cover')) {
+            $validated['book_cover'] = $request->file('book_cover')->store('books', 'public');
         };
 
         $book->update($validated);
