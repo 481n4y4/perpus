@@ -29,7 +29,7 @@ class BookController extends Controller
             'name' => 'required|max:50|string',
             'author' => 'required|max:50|string',
             'publisher' => 'required|max:50|string',
-            'publish-date' => 'required|max_digits:10|integer',
+            'publish_date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
             'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
@@ -71,7 +71,7 @@ class BookController extends Controller
             'name' => 'required|max:50|string',
             'author' => 'required|max:50|string',
             'publisher' => 'required|max:50|string',
-            'publish-date' => 'required|max_digits:10|integer',
+            'publish_date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
             'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
