@@ -98,6 +98,7 @@
                 >
                   <span>Upload a file</span>
                   <input
+                    @change="handleFile"
                     id="file-upload"
                     name="file-upload"
                     type="file"
@@ -127,9 +128,7 @@
 
 <script setup>
 definePageMeta({ layout: "book", middleware: "is-authenticated" });
-const apiBase = useRuntimeConfig().public.apiBase;
-const token = useCookie("auth_token");
-// const api = useApi();
+const api = useApi();
 
 const form = ref({
   name: "",
@@ -141,29 +140,21 @@ const form = ref({
   book_cover: "",
 });
 
-// const submitBook = async () => {
-//   try {
-//     console.log(form.value);
-//     await api("/book", {
-//       method: "POST",
-//       body: form.value,
-//     });
-//     alert("Book successfully added");
-//     navigateTo("/book");
-//   } catch (err) {
-//     console.error(err);
-//     alert("Failed to add book");
-//   }
-// };
+const handleFile = (e) => {
+  const file = e.target.files[0];
+  form.value.book_cover = file;
+};
 
 const submitBook = async () => {
   try {
-    await $fetch(`${apiBase}/book`, {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
+    const formData = new FormData();
+    Object.entries(form.value).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    console.log(form.value);
+    await api("/book", {
       method: "POST",
-      body: JSON.stringify(form.value),
+      body: formData,
     });
     alert("Book successfully added");
     navigateTo("/books");
@@ -172,4 +163,23 @@ const submitBook = async () => {
     alert("Failed to add book");
   }
 };
+
+// const apiBase = useRuntimeConfig().public.apiBase;
+// const token = useCookie("auth_token");
+// const submitBook = async () => {
+//   try {
+//     await $fetch(`${apiBase}/book`, {
+//       headers: {
+//         Authorization: `Bearer ${token.value}`,
+//       },
+//       method: "POST",
+//       body: JSON.stringify(form.value),
+//     });
+//     alert("Book successfully added");
+//     navigateTo("/books");
+//   } catch (err) {
+//     console.error(err);
+//     alert("Failed to add book");
+//   }
+// };
 </script>

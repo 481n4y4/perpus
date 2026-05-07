@@ -94,6 +94,7 @@
                 >
                   <span>Upload a file</span>
                   <input
+                    @change="handleFile"
                     id="file-upload"
                     name="file-upload"
                     type="file"
@@ -122,14 +123,16 @@
 </template>
 
 <script setup>
+// const apiBase = useRuntimeConfig().public.apiBase;
+// const token = useCookie("auth_token");
+
 definePageMeta({ layout: "book", middleware: "is-authenticated" });
-const apiBase = useRuntimeConfig().public.apiBase;
 
 const route = useRoute();
 const id = route.params.id;
-const token = useCookie("auth_token");
+const api = useApi();
 
-const book = await $fetch(`${apiBase}/book/${id}`);
+const book = await api(`/book/${id}`);
 
 const form = ref({
   name: book.data.name,
@@ -141,15 +144,20 @@ const form = ref({
   book_cover: book.data.book_cover,
 });
 
-console.log(book);
+const handleFile = (e) => {
+  const file = e.target.files[0];
+  form.value.book_cover = file;
+};
+
 const submitBook = async () => {
   try {
-    await $fetch(`${apiBase}/book/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
+    const formData = new FormData();
+    Object.entries(form.value).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    await api(`/book/${id}`, {
       method: "PUT",
-      body: form.value,
+      body: formData,
     });
     alert("Book successfuly updated");
     navigateTo("/books");
