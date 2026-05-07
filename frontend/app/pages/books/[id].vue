@@ -6,7 +6,6 @@
       <!-- FORM -->
       <form
         @submit.prevent="submitBook"
-        v-for="form in data"
         class="bg-gray-800 p-6 rounded shadow space-y-4"
       >
         <!-- Nama -->
@@ -61,7 +60,7 @@
         <div>
           <label class="block font-semibold mb-1">Price</label>
           <input
-            v-model="form.publisher"
+            v-model="form.price"
             type="text"
             class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
             placeholder="Input Price"
@@ -130,24 +129,19 @@ const route = useRoute();
 const id = route.params.id;
 const token = useCookie("auth_token");
 
+const book = await $fetch(`${apiBase}/book/${id}`);
+
 const form = ref({
-  name: "",
-  author: "",
-  publisher: "",
-  publish_date: null,
-  price: null,
-  stock: null,
-  book_cover: "",
+  name: book.data.name,
+  author: book.data.author,
+  publisher: book.data.publisher,
+  publish_date: book.data.publish_date,
+  price: book.data.price,
+  stock: book.data.stock,
+  book_cover: book.data.book_cover,
 });
 
-const { data } = await useFetch(`${apiBase}/book/${id}`);
-
-watchEffect(() => {
-  if (data.value) {
-    form.value = { ...data.value.data };
-  }
-});
-
+console.log(book);
 const submitBook = async () => {
   try {
     await $fetch(`${apiBase}/book/${id}`, {
@@ -157,7 +151,7 @@ const submitBook = async () => {
       method: "PUT",
       body: form.value,
     });
-    alert("Book successfuly added");
+    alert("Book successfuly update");
     navigateTo("/books");
   } catch (error) {
     console.error(error);
