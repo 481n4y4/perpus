@@ -88,19 +88,39 @@
 
                     <span v-else class="text-gray-500"> None </span>
                   </td>
-                  <td class="px-3 py-2 flex flex-row gap-1">
-                    <NuxtLink
-                      :to="`/books/${book.id}`"
-                      class="bg-green-600 hover:bg-green-400 text-white font-semibold px-3 py-2 rounded"
+                  <td class="px-3 py-2">
+                    <div
+                      v-if="user?.role === 'admin'"
+                      class="flex flex-row gap-1"
                     >
-                      Edit
-                    </NuxtLink>
-                    <button
-                      @click="handleDelete(book.id)"
-                      class="bg-red-600 hover:bg-red-400 text-white font-semibold px-3 py-2 rounded"
-                    >
-                      Delete
-                    </button>
+                      <NuxtLink
+                        :to="`/books/detail/${book.id}`"
+                        class="bg-green-600 hover:bg-green-400 text-white font-semibold px-3 py-2 rounded"
+                      >
+                        Detail
+                      </NuxtLink>
+                      <NuxtLink
+                        :to="`/books/${book.id}`"
+                        class="bg-green-600 hover:bg-green-400 text-white font-semibold px-3 py-2 rounded"
+                      >
+                        Edit
+                      </NuxtLink>
+                      <button
+                        @click="handleDelete(book.id)"
+                        class="bg-red-600 hover:bg-red-400 text-white font-semibold px-3 py-2 rounded"
+                      >
+                        Delete
+                      </button>
+                    </div>
+
+                    <div v-else>
+                      <NuxtLink
+                        :to="`/books/detail/${book.id}`"
+                        class="bg-green-600 hover:bg-green-400 text-white font-semibold px-3 py-2 rounded"
+                      >
+                        Detail
+                      </NuxtLink>
+                    </div>
                   </td>
                 </tr>
               </tbody>

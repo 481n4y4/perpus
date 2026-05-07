@@ -29,13 +29,13 @@
     </div>
     <div class="lg:flex lg:gap-x-12">
       <NuxtLink to="/" class="text-sm/6 font-semibold text-white"
-        >Home</NuxtLink
+        >{{ item1 }}</NuxtLink
       >
       <NuxtLink to="/about" class="text-sm/6 font-semibold text-white"
-        >About</NuxtLink
+        >{{item2}}</NuxtLink
       >
       <NuxtLink to="/books" class="text-sm/6 font-semibold text-white"
-        >Book List</NuxtLink
+        >{{ item3 }}</NuxtLink
       >
     </div>
     <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-12">
@@ -56,5 +56,10 @@
 </template>
 
 <script setup>
+defineProps({
+  item1: String,
+  item2: String,
+  item3: String
+})
 const token = useCookie("auth_token");
 </script>
