@@ -130,6 +130,12 @@
       </div>
     </div>
   </div>
+
+  <ConfirmModal
+    v-if="showModal"
+    @close="showModal = false"
+    @confirm="confirmDelete"
+  />
 </template>
 
 <script setup>
@@ -138,9 +144,11 @@ definePageMeta({
 });
 const apiBase = useRuntimeConfig().public.apiBase;
 
-const token = useCookie("auth_token");
 const api = useApi();
 const user = useState("authUser");
+const selectedBookId = ref(null);
+const showModal = ref(false);
+
 const {
   data: books,
   pending: pendingBooks,
@@ -153,11 +161,17 @@ const {
 // });
 
 const handleDelete = async (id) => {
+  selectedBookId.value = id;
+  showModal.value = true;
+};
+
+const confirmDelete = async () => {
   try {
-    await api(`/book/${id}`, {
+    await api(`/book/${selectedBookId.value}`, {
       method: "DELETE",
     });
     alert("Book successfuly deleted");
+    showModal.value = false;
   } catch (err) {
     console.error(err);
     alert(`Failed to delete book`);
