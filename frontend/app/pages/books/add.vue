@@ -49,7 +49,7 @@
           <label class="block font-semibold mb-1"> Publish Date </label>
           <input
             v-model="form.publish_date"
-            type="text"
+            type="number"
             class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
             placeholder="Input Publish Date"
             required
@@ -60,8 +60,8 @@
         <div>
           <label class="block font-semibold mb-1">Price</label>
           <input
-            v-model="form.publisher"
-            type="text"
+            v-model="form.price"
+            type="number"
             class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
             placeholder="Input Price"
             required
@@ -72,8 +72,8 @@
         <div>
           <label class="block font-semibold mb-1">Stock</label>
           <input
-            v-model="form.publisher"
-            type="text"
+            v-model="form.stock"
+            type="number"
             class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
             placeholder="Input Stock"
             required
@@ -128,6 +128,8 @@
 <script setup>
 definePageMeta({ layout: "book", middleware: "is-authenticated" });
 const apiBase = useRuntimeConfig().public.apiBase;
+const token = useCookie("auth_token");
+// const api = useApi();
 
 const form = ref({
   name: "",
@@ -139,16 +141,34 @@ const form = ref({
   book_cover: "",
 });
 
+// const submitBook = async () => {
+//   try {
+//     console.log(form.value);
+//     await api("/book", {
+//       method: "POST",
+//       body: form.value,
+//     });
+//     alert("Book successfully added");
+//     navigateTo("/book");
+//   } catch (err) {
+//     console.error(err);
+//     alert("Failed to add book");
+//   }
+// };
+
 const submitBook = async () => {
   try {
     await $fetch(`${apiBase}/book`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
       method: "POST",
       body: JSON.stringify(form.value),
     });
-    alert("Book successfuly added");
-    navigateTo("/book");
-  } catch (error) {
-    console.error(error);
+    alert("Book successfully added");
+    navigateTo("/books");
+  } catch (err) {
+    console.error(err);
     alert("Failed to add book");
   }
 };
