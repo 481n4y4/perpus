@@ -92,12 +92,12 @@
                     >
                       Edit
                     </NuxtLink>
-                    <NuxtLink
-                      to="/books/add"
+                    <button
+                      @click="handleDelete(book.id)"
                       class="bg-red-600 hover:bg-red-400 text-white font-semibold px-3 py-2 rounded"
                     >
                       Delete
-                    </NuxtLink>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -111,10 +111,29 @@
 
 <script setup>
 const apiBase = useRuntimeConfig().public.apiBase;
+const token = useCookie("auth_token");
+
+const route = useRoute();
+
 const {
   data: books,
   pending: pendingBooks,
   error: errorBooks,
   refresh: refreshBooks,
 } = await useFetch(`${apiBase}/book`);
+
+const handleDelete = async (id) => {
+  try {
+    await $fetch(`${apiBase}/book/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      method: "DELETE",
+    });
+    alert("Book successfuly deleted");
+  } catch (err) {
+    console.error(err);
+    alert(`Failed to delete book`);
+  }
+};
 </script>

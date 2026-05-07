@@ -117,7 +117,7 @@
             <p class="mt-2 text-center text-sm">
               Sudah punya akun?
               <NuxtLink
-                to="/auth/login"
+                to="/auth/signin"
                 class="font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
                 masuk di sini

@@ -151,11 +151,11 @@ const submitBook = async () => {
       method: "PUT",
       body: form.value,
     });
-    alert("Book successfuly update");
+    alert("Book successfuly updated");
     navigateTo("/books");
   } catch (error) {
     console.error(error);
-    alert("Failed to add book");
+    alert("Failed to update book");
   }
 };
 </script>
