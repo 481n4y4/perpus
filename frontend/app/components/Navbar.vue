@@ -39,12 +39,22 @@
       >
     </div>
     <div class="lg:flex lg:flex-1 lg:justify-end lg:gap-x-12">
-      <NuxtLink to="/profile" class="text-sm/6 font-semibold text-white"
+      <NuxtLink
+        v-if="token"
+        to="/profile"
+        class="text-sm/6 font-semibold text-white"
         >Profile</NuxtLink
       >
-      <NuxtLink to="/auth/signin" class="text-sm/6 font-semibold text-white"
+      <NuxtLink
+        v-else
+        to="/auth/signin"
+        class="text-sm/6 font-semibold text-white"
         >Log in <span aria-hidden="true">&rarr;</span></NuxtLink
       >
     </div>
   </nav>
 </template>
+
+<script setup>
+const token = useCookie("auth_token");
+</script>

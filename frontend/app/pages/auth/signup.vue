@@ -171,7 +171,7 @@ const handleSignUp = async () => {
     successMessage.value = `${response.message || "Pendaftaran Berhasil"}`;
 
     form.value = { email: "", name: "", password: "" };
-    setTimeout(() => navigateTo("/auth/login"), 2000);
+    setTimeout(() => navigateTo("/auth/signin"), 2000);
   } catch (error) {
     const data = error.data;
 

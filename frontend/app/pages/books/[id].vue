@@ -126,7 +126,10 @@
 // const apiBase = useRuntimeConfig().public.apiBase;
 // const token = useCookie("auth_token");
 
-definePageMeta({ layout: "book", middleware: "is-authenticated" });
+definePageMeta({
+  layout: "book",
+  middleware: ("is-authenticated", "user-role"),
+});
 
 const route = useRoute();
 const id = route.params.id;

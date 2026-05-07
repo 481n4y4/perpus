@@ -127,7 +127,10 @@
 </template>
 
 <script setup>
-definePageMeta({ layout: "book", middleware: "is-authenticated" });
+definePageMeta({
+  layout: "book",
+  middleware: ("is-authenticated", "user-role"),
+});
 const api = useApi();
 
 const form = ref({
