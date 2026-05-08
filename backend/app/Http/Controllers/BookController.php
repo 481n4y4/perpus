@@ -32,7 +32,7 @@ class BookController extends Controller
             'publish_date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
-            'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'book_cover' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,ppt|max:2048'
         ]);
 
         if ($request->hasFile('book_cover')) {
@@ -74,7 +74,7 @@ class BookController extends Controller
             'publish_date' => 'required|max_digits:10|integer',
             'price' => 'required|max_digits:10|integer',
             'stock' => 'required|max_digits:10|integer',
-            'book_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'book_cover' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,ppt|max:2048'
         ]);
 
         if ($request->hasFile('book_cover')) {
