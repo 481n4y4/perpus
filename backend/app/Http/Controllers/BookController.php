@@ -12,7 +12,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $book = Book::all();
+        $book = Book::paginate(10);
 
         return response()->json([
             'message' => 'Berhasil mengambil data buku',
