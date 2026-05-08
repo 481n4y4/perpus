@@ -51,7 +51,7 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="(book, index) in books?.data"
+                  v-for="(book, index) in books?.data?.data"
                   :key="book.id"
                   class="text-right border-b border-opacity-20 bg-gray-800"
                 >
@@ -126,6 +126,64 @@
               </tbody>
             </table>
           </div>
+
+          <div class="flex justify-center p-5">
+            <nav
+              aria-label="Pagination"
+              class="inline-flex -space-x-px rounded-md shadow-sm text-gray-100 bg-gray-800"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center px-2 py-2 text-sm font-semibold border rounded-l-md dark:border-gray-600"
+              >
+                <span class="sr-only">Previous</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+              <div>
+                <button
+                  v-for="page in totalPage"
+                  @click="currentPage = page"
+                  :key="page"
+                  type="button"
+                  :class="buttonActive(page)"
+                >
+                  {{ page }}
+                </button>
+              </div>
+
+              <button
+                type="button"
+                class="inline-flex items-center px-2 py-2 text-sm font-semibold border rounded-r-md border-gray-600"
+              >
+                <span class="sr-only">Next</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -148,18 +206,25 @@ const api = useApi();
 const user = useState("authUser");
 const selectedBookId = ref(null);
 const showModal = ref(false);
+const currentPage = ref(1);
 
-const {
-  data: books,
-  pending: pendingBooks,
-  error: errorBooks,
-  refresh: refreshBooks,
-} = await useFetch(`${apiBase}/book`);
+const url = computed(() => `${apiBase}/book?page=${currentPage.value}`);
 
-// onMounted(() => {
-//   console.log(books.value);
-// });
+const { data: books, refresh: refreshBooks } = await useFetch(url);
 
+const buttonActive = (pageNumber) => {
+  return [
+    "inline-flex items-center px-4 py-2 text-sm font-semibold border border-gray-600",
+    currentPage.value === pageNumber
+      ? "bg-blue-600 hover:bg-blue-400"
+      : "bg-gray-900 hover:bg-gray-700",
+  ];
+};
+const totalPage = computed(() => books.value?.data?.last_page || 1);
+
+watchEffect(currentPage, async () => {
+  await refreshBooks();
+});
 const handleDelete = async (id) => {
   selectedBookId.value = id;
   showModal.value = true;
@@ -170,7 +235,7 @@ const confirmDelete = async () => {
     await api(`/book/${selectedBookId.value}`, {
       method: "DELETE",
     });
-    alert("Book successfuly deleted");
+    alert("Book successfully deleted");
     showModal.value = false;
   } catch (err) {
     console.error(err);
