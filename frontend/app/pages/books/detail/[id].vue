@@ -23,7 +23,7 @@
           >
         </div>
 
-        <!-- Publoisher -->
+        <!-- Publisher -->
         <div>
           <label class="block font-semibold mb-1"> Publisher </label>
           <span
@@ -65,10 +65,20 @@
           <div
             class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
           >
-            <img
-              :src="`http://127.0.0.1:8000/storage/${book.data.book_cover}`"
-              alt=""
-            />
+            <img v-if="isImage" :src="fileUrl" alt="" />
+
+            <div v-else class="flex flex-col gap-3">
+              <span>{{ book.data.book_cover }}</span>
+              <div class="flex justify-center">
+                <a
+                  :href="fileUrl"
+                  target="_blank"
+                  class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded"
+                >
+                  Open File</a
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -88,6 +98,10 @@ definePageMeta({
 const route = useRoute();
 const id = route.params.id;
 const api = useApi();
-
 const book = await api(`/book/${id}`);
+const fileUrl = `http://127.0.0.1:8000/storage/${book.data.book_cover}`;
+const imageExtensions = ["jpg", "jpeg", "png"];
+
+const fileExtension = book.data.book_cover.split(".").pop().toLowerCase();
+const isImage = imageExtensions.includes(fileExtension);
 </script>

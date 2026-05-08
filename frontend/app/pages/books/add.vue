@@ -91,19 +91,22 @@
                 class="mx-auto size-12 text-gray-600"
                 aria-hidden="true"
               />
-              <div class="mt-4 flex text-sm/6 text-gray-400">
+              <div class="mt-4 text-sm/6 text-gray-400">
                 <label
                   for="file-upload"
                   class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-400 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-500 hover:text-indigo-300"
                 >
-                  <span>Upload a file</span>
-                  <input
-                    @change="handleFile"
-                    id="file-upload"
-                    name="file-upload"
-                    type="file"
-                    class="sr-only"
-                  />
+                  <div>
+                    <span v-if="!selectedFile">Upload a file</span>
+                    <span v-else>{{ selectedFile }}</span>
+                    <input
+                      @change="handleFile"
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      class="sr-only"
+                    />
+                  </div>
                 </label>
                 <p class="pl-1">or drag and drop</p>
               </div>
@@ -132,6 +135,7 @@ definePageMeta({
   middleware: ("is-authenticated", "user-role"),
 });
 const api = useApi();
+const selectedFile = ref("");
 
 const form = ref({
   name: "",
@@ -146,6 +150,7 @@ const form = ref({
 const handleFile = (e) => {
   const file = e.target.files[0];
   form.value.book_cover = file;
+  selectedFile.value = file.name;
 };
 
 const submitBook = async () => {

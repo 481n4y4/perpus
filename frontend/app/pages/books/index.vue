@@ -83,7 +83,7 @@
                       target="_blank"
                       class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded"
                     >
-                      Photo
+                      File
                     </a>
 
                     <span v-else class="text-gray-500"> None </span>
@@ -101,7 +101,7 @@
                       </NuxtLink>
                       <NuxtLink
                         :to="`/books/${book.id}`"
-                        class="bg-green-600 hover:bg-green-400 text-white font-semibold px-3 py-2 rounded"
+                        class="bg-blue-600 hover:bg-blue-400 text-white font-semibold px-3 py-2 rounded"
                       >
                         Edit
                       </NuxtLink>

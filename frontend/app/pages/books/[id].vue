@@ -72,7 +72,7 @@
         <div>
           <label class="block font-semibold mb-1">Stock</label>
           <input
-            v-model="form.publisher"
+            v-model="form.stock"
             type="text"
             class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
             placeholder="Input Stock"
@@ -87,12 +87,13 @@
             class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
           >
             <div class="text-center">
-              <div class="mt-4 flex text-sm/6 text-gray-400">
+              <div class="mt-4 text-sm/6 text-gray-400">
                 <label
                   for="file-upload"
                   class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-400 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-500 hover:text-indigo-300"
                 >
-                  <span>Upload a file</span>
+                  <span v-if="!selectedFile">Upload a file</span>
+                  <span v-else>{{ selectedFile }}</span>
                   <input
                     @change="handleFile"
                     id="file-upload"
@@ -128,7 +129,7 @@
 
 definePageMeta({
   layout: "book",
-  middleware: ("is-authenticated", "user-role"),
+  middleware: ["is-authenticated", "user-role"],
 });
 
 const route = useRoute();
@@ -136,6 +137,7 @@ const id = route.params.id;
 const api = useApi();
 
 const book = await api(`/book/${id}`);
+const selectedFile = ref(book.data.book_cover);
 
 const form = ref({
   name: book.data.name,
@@ -145,24 +147,29 @@ const form = ref({
   price: book.data.price,
   stock: book.data.stock,
   book_cover: book.data.book_cover,
+  _method: "PUT",
 });
 
 const handleFile = (e) => {
   const file = e.target.files[0];
   form.value.book_cover = file;
+  selectedFile.value = file.name;
 };
 
 const submitBook = async () => {
   try {
     const formData = new FormData();
     Object.entries(form.value).forEach(([key, value]) => {
+      if (key === "book_cover" && !(value instanceof File)) {
+        return;
+      }
       formData.append(key, value);
     });
     await api(`/book/${id}`, {
-      method: "PUT",
+      method: "POST",
       body: formData,
     });
-    alert("Book successfuly updated");
+    alert("Book successfully updated");
     navigateTo("/books");
   } catch (error) {
     console.error(error);

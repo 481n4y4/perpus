@@ -2,13 +2,14 @@ export const useApi = () => {
   const apiBase = useRuntimeConfig().public.apiBase;
   const token = useCookie("auth_token");
 
-  const api = $fetch.create({
+  return $fetch.create({
     baseURL: apiBase,
-
-    headers: {
-      Authorization: `Bearer ${token.value}`,
+    onRequest({ options }) {
+      options.headers = {
+        Accept: "application/json",
+        ...(options.headers || {}),
+        ...(token.value ? { Authorization: `Bearer ${token.value}` } : {}),
+      };
     },
   });
-
-  return api;
 };
