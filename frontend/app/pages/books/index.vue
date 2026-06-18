@@ -102,7 +102,20 @@
                       <NuxtLink
                         :to="`/books/${book.id}`"
                         class="bg-blue-600 hover:bg-blue-400 text-white font-semibold px-3 py-2 rounded"
-                      >
+                      ><!-- Current Cover Preview -->
+        <div class="mt-4">
+          <label class="block font-semibold mb-2">Current Cover</label>
+          <div class="flex justify-center">
+            <img
+              src="https://via.placeholder.com/200x300/1e293b/ffffff?text=Book+Cover"
+              alt="Current book cover"
+              class="rounded-lg shadow-lg max-h-48 object-cover"
+            />
+          </div>
+          <p class="text-center text-gray-400 text-sm mt-2">
+            book-cover-gatsby.jpg
+          </p>
+        </div>
                         Edit
                       </NuxtLink>
                       <button
